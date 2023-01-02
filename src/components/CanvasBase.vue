@@ -10,23 +10,27 @@
     </div>
   </div>
   <div class="boardControl">
-    <div class="controlButtons">
-      <button @click="nextCycle()">Iniciar</button>
-      <button @click="start()">Reiniciar</button>
-      <button>Parar</button>
-    </div>
+    <button class="controlButton" @click="toggle()">
+      {{ startStopText }}
+    </button>
     <div class="controlForm">
-      Para alterar as dimensões do quadro, insira a quantidade de células nos
-      campos abaixo e clique em <strong>reiniciar</strong>.
-
-      <label for="boardWidth"
-        >Insira a <strong>largura</strong> personalizada</label
-      >
-      <input type="text" name="boardWidth" v-model="width" />
-      <label for="boardHeight"
-        >Insira a <strong>altura</strong> personalizada</label
-      >
-      <input type="text" name="boardHeight" v-model="height" />
+      <p>
+        Para alterar as dimensões do quadro, insira a quantidade de células nos
+        campos abaixo e clique em <span class="boldText">reiniciar</span>.
+      </p>
+      <div class="inputForm">
+        <label for="boardWidth"
+          >Insira a quantidade de células
+          <span class="boldText">horizontalmente</span></label
+        >
+        <input type="text" name="boardWidth" v-model="width" />
+        <label for="boardHeight"
+          >Insira a quantidade de células
+          <span class="boldText">verticalmente</span></label
+        >
+        <input type="text" name="boardHeight" v-model="height" />
+      </div>
+      <button class="controlButton" @click="start()">Reiniciar</button>
     </div>
   </div>
 </template>
@@ -41,13 +45,19 @@ export default {
       boardMatrix: [],
       actualBoard: [],
       cellsAlive: 0,
-      width: 12,
-      height: 12,
+      width: 48,
+      height: 36,
       cycles: 0,
+      timeInterval: undefined,
     };
   },
   created() {
     this.start();
+  },
+  computed: {
+    startStopText() {
+      return this.timeInterval !== undefined ? "Parar" : "Iniciar";
+    },
   },
   methods: {
     selectCell(row, col) {
@@ -71,7 +81,7 @@ export default {
         grid[x] = [];
         for (var y = 0; y < this.height; y++) {
           let isActive = this.boardMatrix[x][y];
-          let aliveNeighbours = this.neighbors(x, y);
+          let aliveNeighbours = this.neighbours(x, y);
           let result = false;
 
           if (isActive && aliveNeighbours < 2) {
@@ -102,21 +112,24 @@ export default {
         (count, row) => count + row.filter((cell) => cell).length,
         false
       );
+      if (this.cellsAlive === 0) {
+        this.stopCycle();
+      }
     },
-    neighbors(x, y) {
+    neighbours(x, y) {
       let neighborhood = 0;
 
       for (var dx = -1; dx <= 1; dx++) {
         for (var dy = -1; dy <= 1; dy++) {
-          let neighborX = x + dx;
-          let neighborY = y + dy;
+          let neighbourX = x + dx;
+          let neighbourY = y + dy;
           if (
             (dx !== 0 || dy !== 0) &&
-            neighborX >= 0 &&
-            neighborX < this.width &&
-            neighborY >= 0 &&
-            neighborY < this.height &&
-            this.boardMatrix[neighborX][neighborY]
+            neighbourX >= 0 &&
+            neighbourX < this.width &&
+            neighbourY >= 0 &&
+            neighbourY < this.height &&
+            this.boardMatrix[neighbourX][neighbourY]
           ) {
             neighborhood++;
           }
@@ -124,6 +137,20 @@ export default {
       }
 
       return neighborhood;
+    },
+    startCycle() {
+      this.timeInterval = setInterval(this.nextCycle, 1000);
+    },
+    stopCycle() {
+      clearInterval(this.timeInterval);
+      this.timeInterval = undefined;
+    },
+    toggle() {
+      if (this.timeInterval === undefined) {
+        this.startCycle();
+      } else {
+        this.stopCycle();
+      }
     },
   },
 };
@@ -135,23 +162,56 @@ export default {
   background-color: #63b984;
   display: flex;
   padding: 32px;
-  margin: 32px;
+  margin: auto;
 }
+
 .boardControl {
   display: flex;
   flex-direction: column;
+  padding: 32px;
+  margin: auto;
+  width: 30%;
+  max-width: 300px;
 }
+
 .controlForm,
 .boardControl {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+
 .controlButtons {
   display: flex;
   gap: 30px;
+  justify-content: space-around;
 }
+
+.controlButton {
+  padding: 12px;
+  font-size: 22pt;
+  border: none;
+}
+
+.controlButton:hover {
+  background-color: #63b984;
+  cursor: pointer;
+}
+
 .active {
   background-color: black !important;
+}
+
+.boldText {
+  font-weight: 700;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin-bottom: 12px;
 }
 </style>

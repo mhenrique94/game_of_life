@@ -5,5 +5,3 @@ import CanvasBase from "./components/CanvasBase.vue";
 <template>
   <CanvasBase />
 </template>
-
-<style scoped></style>
