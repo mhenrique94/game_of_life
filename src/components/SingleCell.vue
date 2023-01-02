@@ -1,38 +1,29 @@
 <template>
-  <button
-    name="cell"
-    class="cellButton"
-    :class="{ active: isActive }"
-    :key="key"
-    @click="toggleAlive(cellId)"
-  ></button>
+  <div name="cell" class="cellButton" @click="clicked()"></div>
 </template>
 <script>
 export default {
   name: "SingleCell",
-  data() {
-    return {
-      isActive: 0,
-    };
-  },
   methods: {
-    toggleAlive(cellId) {
-      this.isActive = this.isActive ? this.isActive - 1 : this.isActive + 1;
-      this.$emit("toggleAlive", cellId);
+    clicked() {
+      let cellOrientation = this.$.vnode.key.split(":");
+      console.log("printa no filho ", cellOrientation[0], cellOrientation[1]);
+      this.$emit("toggle", cellOrientation[0], cellOrientation[1]);
     },
   },
-  computed: {},
 };
 </script>
 <style scoped>
 .cellButton {
-  width: 32px;
-  height: 32px;
-  margin: 1px;
+  width: 16px;
+  height: 16px;
+  margin: 0px;
   line-height: 0;
+  background-color: whitesmoke;
+  border: 1px solid gray;
 }
 
-.active {
-  background-color: black;
+.cellButton:hover {
+  background-color: #e5e5e6;
 }
 </style>
