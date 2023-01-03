@@ -23,5 +23,6 @@ export default {
 
 .cellButton:hover {
   background-color: #c2c2c4;
+  cursor: pointer;
 }
 </style>

@@ -10,13 +10,19 @@
     </div>
   </div>
   <div class="boardControl">
+    <p>
+      Selecione as células iniciais no quadro ou experimente o
+      <span class="boldText">RANDOMIZE</span> e pressione Iniciar.
+    </p>
+    <button class="controlButton" @click="startRandomize()">RANDOMIZE</button>
     <button class="controlButton" @click="toggle()">
       {{ startStopText }}
     </button>
     <div class="controlForm">
       <p>
-        Para alterar as dimensões do quadro, insira a quantidade de células nos
-        campos abaixo e clique em <span class="boldText">reiniciar</span>.
+        Para alterar as dimensões do quadro ou limpá-lo, insira a quantidade de
+        células nos campos abaixo e clique em
+        <span class="boldText">reiniciar</span>.
       </p>
       <div class="inputForm">
         <label for="boardWidth"
@@ -72,6 +78,15 @@ export default {
         this.boardMatrix.push([]);
         for (var j = 0; j < this.height; j++) {
           this.boardMatrix[i].push(false);
+        }
+      }
+    },
+    startRandomize() {
+      this.boardMatrix = [];
+      for (var i = 0; i < this.width; i++) {
+        this.boardMatrix.push([]);
+        for (var j = 0; j < this.height; j++) {
+          this.boardMatrix[i].push([true, false][Math.round(Math.random())]);
         }
       }
     },
