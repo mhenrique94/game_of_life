@@ -1,42 +1,48 @@
 <template>
-  <div class="canvasBase" id="canvasBase">
-    <div v-for="(row, index) in boardMatrix" :key="index">
-      <SingleCell
-        v-for="(cell, subindex) in row"
-        :key="index + ':' + subindex"
-        @toggle="selectCell(index, subindex)"
-        :class="{ active: cellSelected(index, subindex) }"
-      />
-    </div>
-  </div>
-  <div class="boardControl">
-    <p>
-      Selecione as células iniciais no quadro ou experimente o
-      <span class="boldText">RANDOMIZE</span> e pressione Iniciar.
-    </p>
-    <button class="controlButton" @click="startRandomize()">RANDOMIZE</button>
-    <button class="controlButton" @click="toggle()">
-      {{ startStopText }}
-    </button>
-    <div class="controlForm">
-      <p>
-        Para alterar as dimensões do quadro ou limpá-lo, insira a quantidade de
-        células nos campos abaixo e clique em
-        <span class="boldText">reiniciar</span>.
-      </p>
-      <div class="inputForm">
-        <label for="boardWidth"
-          >Insira a quantidade de células
-          <span class="boldText">horizontalmente</span></label
-        >
-        <input type="text" name="boardWidth" v-model="width" />
-        <label for="boardHeight"
-          >Insira a quantidade de células
-          <span class="boldText">verticalmente</span></label
-        >
-        <input type="text" name="boardHeight" v-model="height" />
+  <div class="canvasBody">
+    <div class="canvasBase" id="canvasBase">
+      <div v-for="(row, index) in boardMatrix" :key="index">
+        <SingleCell
+          v-for="(cell, subindex) in row"
+          :key="index + ':' + subindex"
+          @toggle="selectCell(index, subindex)"
+          :class="{ active: cellSelected(index, subindex) }"
+        />
       </div>
-      <button class="controlButton" @click="start()">Reiniciar</button>
+    </div>
+    <div class="boardControl">
+      <p>
+        Selecione as células iniciais no quadro ou experimente o
+        <span class="boldText">RANDOMIZE</span> e pressione Iniciar.
+      </p>
+      <button class="controlButton" @click="startRandomize()">RANDOMIZE</button>
+      <button
+        class="controlButton"
+        :disabled="cellsAlive === 0"
+        @click="toggle()"
+      >
+        {{ startStopText }}
+      </button>
+      <div class="controlForm">
+        <p>
+          Para alterar as dimensões do quadro ou limpá-lo, insira a quantidade
+          de células nos campos abaixo e clique em
+          <span class="boldText">reiniciar</span>.
+        </p>
+        <div class="inputForm">
+          <label for="boardWidth"
+            >Insira a quantidade de células
+            <span class="boldText">horizontalmente</span></label
+          >
+          <input type="text" name="boardWidth" v-model="width" />
+          <label for="boardHeight"
+            >Insira a quantidade de células
+            <span class="boldText">verticalmente</span></label
+          >
+          <input type="text" name="boardHeight" v-model="height" />
+        </div>
+        <button class="controlButton" @click="start()">Reiniciar</button>
+      </div>
     </div>
   </div>
 </template>
@@ -52,7 +58,7 @@ export default {
       actualBoard: [],
       cellsAlive: 0,
       width: 48,
-      height: 36,
+      height: 32,
       cycles: 0,
       timeInterval: undefined,
     };
@@ -73,6 +79,7 @@ export default {
       return this.boardMatrix[row][col] === true;
     },
     start() {
+      this.cellsAlive = 0;
       this.boardMatrix = [];
       for (var i = 0; i < this.width; i++) {
         this.boardMatrix.push([]);
@@ -89,6 +96,10 @@ export default {
           this.boardMatrix[i].push([true, false][Math.round(Math.random())]);
         }
       }
+      this.cellsAlive = this.boardMatrix.reduce(
+        (count, row) => count + row.filter((cell) => cell).length,
+        false
+      );
     },
     nextCycle() {
       let grid = [];
@@ -172,6 +183,9 @@ export default {
 </script>
 
 <style>
+.canvasBody {
+  display: flex;
+}
 .canvasBase {
   border: 1px solid grey;
   background-color: #63b984;
