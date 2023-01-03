@@ -1,17 +1,27 @@
-name: Build Vue
+name: Node.js CI
+
 on:
   push:
-    paths:
-      - "golvue/**"
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
 jobs:
-  build_vue:
+  gh-pages-deploy:
+    name: Deploying to Github Pages
     runs-on: ubuntu-latest
-    name: Build Vue
+    defaults:
+      run:
+        working-directory: ./golvue
     steps:
       - uses: actions/checkout@v2
-      - id: Build-Vue
-        working-directory: golvue
+      - uses: actions/setup-node@v2
         with:
-          username: "mhenrique94"
-          reponame: "game_of_life"
-          token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+          node-version: "14"
+      - name: Install packages
+        run: npm install
+      - name: Set Creds
+        run: git config user.name "mhenrique94" && git config user.email "mhenrique94@outlook.com"
+      - name: Deploy
+        run: npm run deploy
