@@ -1,35 +1,22 @@
 # game_of_life
 
-This template should help get you started developing with Vue 3 in Vite.
+Esse repositório contém 2 projetos do game of life: um em vuejs e outro em python.
 
-## Recommended IDE Setup
+Para acessar o game, visite a URL da descrição.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Para rodar o projeto localmente (use um terminal) e git clone <este_repositorio>:
 
-## Customize configuration
+<br> Game of life em VUE:
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
+cd golvue
+npm install
 npm run dev
 ```
 
-### Compile and Minify for Production
+<br> Game of life em PYTHON:
 
-```sh
-npm run build
 ```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+cd golpy
+python base.py
 ```
