@@ -5,7 +5,7 @@
         <SingleCell
           v-for="(cell, subindex) in row"
           :key="index + ':' + subindex"
-          @toggle="selectCell(index, subindex)"
+          @toggle="selectCell(index, subindex), countCellsAlive()"
           :class="{ active: cellSelected(index, subindex) }"
         />
       </div>
@@ -88,6 +88,12 @@ export default {
         }
       }
     },
+    countCellsAlive() {
+      this.cellsAlive = this.boardMatrix.reduce(
+        (count, row) => count + row.filter((cell) => cell).length,
+        false
+      );
+    },
     startRandomize() {
       this.boardMatrix = [];
       for (var i = 0; i < this.width; i++) {
@@ -96,10 +102,7 @@ export default {
           this.boardMatrix[i].push([true, false][Math.round(Math.random())]);
         }
       }
-      this.cellsAlive = this.boardMatrix.reduce(
-        (count, row) => count + row.filter((cell) => cell).length,
-        false
-      );
+      this.countCellsAlive();
     },
     nextCycle() {
       let grid = [];
@@ -134,10 +137,7 @@ export default {
           this.boardMatrix[x][y] = grid[x][y];
         }
       }
-      this.cellsAlive = this.boardMatrix.reduce(
-        (count, row) => count + row.filter((cell) => cell).length,
-        false
-      );
+      this.countCellsAlive();
       if (this.cellsAlive === 0) {
         this.stopCycle();
       }
