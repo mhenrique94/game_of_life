@@ -1,27 +1,28 @@
-name: Node.js CI
-
+name: Deploy to GitHub Pages
 on:
   push:
-    branches: [main]
-
-  pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  gh-pages-deploy:
-    name: Deploying to Github Pages
+  deploy:
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./golvue
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@main
         with:
-          node-version: "14"
-      - name: Install packages
-        run: npm install
-      - name: Set Creds
-        run: git config user.name "mhenrique94" && git config user.email "mhenrique94@outlook.com"
+          node-version: 14.x
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build
+
       - name: Deploy
-        run: npm run build
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: gh-pages
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
