@@ -24,6 +24,13 @@ export default {
     alt="icone de informação"
     @click="toggleModal"
   />
+  <a href="https://github.com/mhenrique94" target="_blank">
+    <img
+      class="git_logo"
+      src="../public/github-mark.png"
+      alt="Logo do Github"
+    />
+  </a>
 
   <div v-show="modal" class="disclaimer">
     <p>Desenvolvido em Vue.js por Marcelo Silva com base em:</p>
@@ -65,7 +72,17 @@ h1 {
   right: 12px;
   width: 32px;
   height: 32px;
+  cursor: pointer;
 }
+
+.git_logo {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 12px;
+  right: 56px;
+}
+
 .disclaimer {
   background-color: antiquewhite;
   width: 420px;
