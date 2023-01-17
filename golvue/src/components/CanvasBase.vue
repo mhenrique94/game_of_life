@@ -63,7 +63,9 @@
             <div class="sliderValue">{{ height }}</div>
           </div>
         </div>
-        <button class="controlButton" @click="start()">Reiniciar</button>
+        <button class="controlButton" @click="start()" :disabled="disabled">
+          Reiniciar
+        </button>
       </div>
     </div>
   </div>
