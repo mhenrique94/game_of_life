@@ -26,21 +26,42 @@
       </button>
       <div class="controlForm">
         <p>
-          Para alterar as dimensões do quadro ou limpá-lo, insira a quantidade
-          de células nos campos abaixo e clique em
+          Para alterar as dimensões do quadro ou limpá-lo, selecione a
+          quantidade de células nos campos abaixo e clique em
           <span class="boldText">reiniciar</span>.
         </p>
         <div class="inputForm">
           <label for="boardWidth"
-            >Insira a quantidade de células
+            >Selecione a quantidade de células
             <span class="boldText">horizontalmente</span></label
           >
-          <input type="text" name="boardWidth" v-model="width" />
+          <div class="sliderWrapper">
+            <input
+              type="range"
+              min="12"
+              max="48"
+              name="boardWidth"
+              v-model="width"
+              class="slider"
+            />
+            <div class="sliderValue">{{ width }}</div>
+          </div>
+          <br />
           <label for="boardHeight"
-            >Insira a quantidade de células
+            >Selecione a quantidade de células
             <span class="boldText">verticalmente</span></label
           >
-          <input type="text" name="boardHeight" v-model="height" />
+          <div class="sliderWrapper">
+            <input
+              type="range"
+              min="12"
+              max="48"
+              name="boardHeight"
+              v-model="height"
+              class="slider"
+            />
+            <div class="sliderValue">{{ height }}</div>
+          </div>
         </div>
         <button class="controlButton" @click="start()">Reiniciar</button>
       </div>
@@ -253,13 +274,32 @@ export default {
 .inputForm {
   display: flex;
   flex-direction: column;
+  margin: 24px auto;
 }
 
-input {
-  margin-bottom: 12px;
+label {
+  margin-top: 12px;
 }
 
 .coverBoard {
   display: none !important;
+}
+
+.slider {
+  width: 100%;
+  margin: 0;
+}
+
+.sliderWrapper {
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.sliderValue {
+  background-color: white;
+  padding: 8px;
 }
 </style>

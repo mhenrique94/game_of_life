@@ -18,6 +18,7 @@ export default {
   margin: 0px;
   line-height: 0;
   background-color: whitesmoke;
+  transition: background-color 0.25s linear;
   border: 1px solid gray;
 }
 
