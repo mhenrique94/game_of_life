@@ -10,6 +10,7 @@
         />
       </div>
     </div>
+    <div :style="cover()"></div>
     <div class="boardControl">
       <p>
         Selecione as células iniciais no quadro ou experimente o
@@ -61,6 +62,7 @@ export default {
       height: 32,
       cycles: 0,
       timeInterval: undefined,
+      disabled: false,
     };
   },
   created() {
@@ -166,16 +168,29 @@ export default {
     },
     startCycle() {
       this.timeInterval = setInterval(this.nextCycle, 1000);
+      this.disabled = true;
     },
     stopCycle() {
       clearInterval(this.timeInterval);
       this.timeInterval = undefined;
+      this.disabled = false;
     },
     toggle() {
       if (this.timeInterval === undefined) {
         this.startCycle();
       } else {
         this.stopCycle();
+      }
+    },
+    cover() {
+      if (this.disabled) {
+        return {
+          width: `${this.width * 24}px`,
+          height: `${this.height * 24}px`,
+          float: "left",
+          zIndex: 5,
+          position: "absolute",
+        };
       }
     },
   },
@@ -242,5 +257,9 @@ export default {
 
 input {
   margin-bottom: 12px;
+}
+
+.coverBoard {
+  display: none !important;
 }
 </style>
